@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glassmorphism Profile Card</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card" data-tilt data-tilt-glare data-tilt-max-glare="0.8">
+        <div class="wrapper">
+            <div class="profile">
+                <img src="profile.jpg" alt="">
+            </div>
+            <h2>BRAR⚔</h2>
+            <p>Front-end Developer</p>
+            <p>Hi i am gurshan developer of this website i just create it for fun.</p>
+            <div class="social-icons">
+                <!-- REPLACE 'YOUR_USERNAME_HERE' with your real instagram username below -->
+                <a href="https://www.instagram.com/brar25.8" target="_blank" class="follow-btn">Follow</a>
+            </div>
+        </div>
+    </div>
+    <script src="vanilla-tilt.js"></script>
+    <script>
+        VanillaTilt.init(document.querySelectorAll(".card"), {
+            max: 25,
+            speed: 400
+        });
+        
+        const card = document.querySelector(".card");
+        if (card && card.vanillaTilt) {
+            // 1. When you first touch the screen
+            card.addEventListener("touchstart", (e) => {
+                // FIX: If touching the button, stop the tilt logic so the button can work
+                if (e.target.closest('a')) return;
+
+                e.preventDefault(); // Stop scrolling
+                card.vanillaTilt.onMouseEnter(); 
+                
+                const touch = e.touches[0];
+                const mockEvent = { 
+                    clientX: touch.clientX, 
+                    clientY: touch.clientY, 
+                    target: card 
+                };
+                card.vanillaTilt.onMouseMove(mockEvent); 
+            }, { passive: false });
+
+            // 2. When you drag your finger
+            card.addEventListener("touchmove", (e) => {
+                // FIX: If touching the button, stop the tilt logic
+                if (e.target.closest('a')) return;
+
+                e.preventDefault(); // Stop scrolling
+                const touch = e.touches[0];
+                
+                const mockEvent = { 
+                    clientX: touch.clientX, 
+                    clientY: touch.clientY, 
+                    target: card 
+                };
+                card.vanillaTilt.onMouseMove(mockEvent); 
+            }, { passive: false });
+
+            // 3. When you lift your finger
+            card.addEventListener("touchend", (e) => {
+                // No preventDefault here so clicks can go through
+                card.vanillaTilt.onMouseLeave(); 
+            });
+        }
+    </script>
+</body>
+</html>
